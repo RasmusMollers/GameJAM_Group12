@@ -18,10 +18,11 @@ public class WheelControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Get the Wheel collider's world pose values and
-        // use them to set the wheel model's position and rotation
-        WheelCollider.GetWorldPose(out position, out rotation);
-        wheelModel.transform.position = position;
-        wheelModel.transform.rotation = rotation;
+        if (this.CompareTag("Steering"))
+        {
+            WheelCollider.GetWorldPose(out position, out rotation);
+            wheelModel.transform.position = position;
+            wheelModel.transform.rotation = rotation;
+        }
     }
 }

@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     float steeringRate = 15f;
 
     [Header("Car Properties")]
-    public float motorTorque = 2000f;
+    public float motorTorque = 20000000f;
     public float brakeTorque = 2000f;
     public float maxSpeed = 20f;
     public float steeringRange = 30f;
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     //Wheels Reference
     List<WheelCollider> Wheels = new List<WheelCollider>();
-    /*
+
     [Header("Input Actions")]
     public InputActionReference moveAction;
 
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
     {
         moveAction.action.Disable();
     }
-    */
     // Start is called before the first frame update
     void Start()
     {
@@ -67,42 +66,49 @@ public class PlayerController : MonoBehaviour
 
     void updateSpeedAndSteering()
     {
-
+        rb.AddForce(transform.forward * motorTorque);
+        /*
         // Get player input for acceleration and steering
         float vInput = Input.GetAxisRaw("Vertical"); // Forward/backward input
         float hInput = Input.GetAxisRaw("Horizontal"); // Steering input
-        /*
+        */
         // Get player input for acceleration and steering
         float vInput = moveAction.action.ReadValue<Vector2>().y; // Forward/backward input
         float hInput = moveAction.action.ReadValue<Vector2>().x; // Steering input
-        */
+        Debug.Log("vInput? " + vInput + "\n" + "hInput " + hInput);
+
+
         // Calculate current speed along the car's forward axis
         float forwardSpeed = Vector3.Dot(transform.forward, rb.linearVelocity);
         float speedFactor = Mathf.InverseLerp(0, maxSpeed, Mathf.Abs(forwardSpeed)); // Normalized speed factor
 
         // Reduce motor torque and steering at high speeds for better handling
         float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
-        float currentSteerRange = Mathf.Lerp(steeringRange, steeringRangeAtMaxSpeed, speedFactor);
+        float currentSteerRange = Mathf.Lerp(steeringRange, steeringRangeAtMaxSpeed, speedFactor+1);
 
         // Determine if the player is accelerating or trying to reverse
         bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
+        Debug.Log("Accelerating? " + isAccelerating +"\n"+ "Speed " + forwardSpeed);
+
+
 
         foreach (WheelCollider wheel in Wheels)
         {
             if (wheel.CompareTag("Steering"))
             {
-                wheel.steerAngle = hInput * currentSteerRange;
+                wheel.steerAngle = hInput * steeringRange;
             }
 
             if (isAccelerating)
             {
+                wheel.brakeTorque = 0f;
+
                 // Apply torque to motorized wheels
                 if (wheel.CompareTag("Driving"))
                 {
-                    wheel.motorTorque = vInput * currentMotorTorque;
+                    wheel.motorTorque = vInput * motorTorque;
                 }
                 // Release brakes when accelerating
-                wheel.brakeTorque = 0f;
             }
             else
             {
