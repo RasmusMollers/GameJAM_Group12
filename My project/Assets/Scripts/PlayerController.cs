@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     float steeringRate = 15f;
 
     [Header("Car Properties")]
-    public float motorTorque = 20000000f;
+    public float motorTorque = 2000f;
     public float brakeTorque = 2000f;
     public float maxSpeed = 20f;
     public float steeringRange = 30f;
@@ -51,6 +51,10 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Wheel : " + wheel);
 
         }
+        // Adjust center of mass to improve stability and prevent rolling
+        Vector3 centerOfMass = rb.centerOfMass;
+        centerOfMass.y += centreOfGravityOffset;
+        rb.centerOfMass = centerOfMass;
     }
 
     // Update is called once per frame
@@ -96,7 +100,7 @@ public class PlayerController : MonoBehaviour
         {
             if (wheel.CompareTag("Steering"))
             {
-                wheel.steerAngle = hInput * steeringRange;
+                wheel.steerAngle = hInput * currentSteerRange;
             }
 
             if (isAccelerating)
@@ -106,7 +110,7 @@ public class PlayerController : MonoBehaviour
                 // Apply torque to motorized wheels
                 if (wheel.CompareTag("Driving"))
                 {
-                    wheel.motorTorque = vInput * motorTorque;
+                    wheel.motorTorque = vInput * currentMotorTorque;
                 }
                 // Release brakes when accelerating
             }
