@@ -1334,6 +1334,10 @@ PrefabInstance:
       value: 0.909804
       objectReference: {fileID: 0}
     - target: {fileID: 4079480828171264573, guid: dd8aedcdc71b8214e88ab575d0c52414, type: 3}
+      propertyPath: gameObjectWanted
+      value: 
+      objectReference: {fileID: 39057745}
+    - target: {fileID: 4079480828171264573, guid: dd8aedcdc71b8214e88ab575d0c52414, type: 3}
       propertyPath: onDeliveryEffect
       value: 
       objectReference: {fileID: 39057745}

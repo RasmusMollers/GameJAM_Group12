@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviour
     public float centreOfGravityOffset = -1f;
 
     //Progression Parameters
-    private int xp = 0;
+    //private int xp = 0;
 
-    private float emissionMeter = 100f;
+   // private float emissionMeter = 100f;
 
 
 
@@ -29,21 +29,28 @@ public class PlayerController : MonoBehaviour
     List<WheelCollider> Wheels = new List<WheelCollider>();
     List<GameObject> Pickups = new List<GameObject>();
 
-    [Header("Input Actions")]
-    public InputActionReference moveAction;
+    private CarInputActions carControls; // Reference to the new input system
 
-    private void OnEnable()
+    void Awake()
     {
-        moveAction.action.Enable();
+        carControls = new CarInputActions(); // Initialize Input Actions
+    }
+    void OnEnable()
+    {
+        carControls.Enable();
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
-        moveAction.action.Disable();
+        carControls.Disable();
     }
     // Start is called before the first frame update
     void Start()
     {
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        //Input.enable();
         GameObject car = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         car.transform.position = new Vector3(0, 10, 0);
         Renderer rend = car.GetComponent<Renderer>();
@@ -74,15 +81,23 @@ public class PlayerController : MonoBehaviour
     void updateSpeedAndSteering()
     {
         rb.AddForce(transform.forward * motorTorque);
-        /*
+        
         // Get player input for acceleration and steering
-        float vInput = Input.GetAxisRaw("Vertical"); // Forward/backward input
-        float hInput = Input.GetAxisRaw("Horizontal"); // Steering input
-        */
+        //float vInput = Input.GetAxisRaw("Vertical"); // Forward/backward input
+        //float hInput = Input.GetAxisRaw("Horizontal"); // Steering input
+        
         // Get player input for acceleration and steering
-        float vInput = moveAction.action.ReadValue<Vector2>().y; // Forward/backward input
-        float hInput = moveAction.action.ReadValue<Vector2>().x; // Steering input
+        //float vInput = moveAction.action.ReadValue<Vector2>().y; // Forward/backward input
+        //float hInput = moveAction.action.ReadValue<Vector2>().x; // Steering input
         //Debug.Log("vInput? " + vInput + "\n" + "hInput " + hInput);
+
+
+        // Read the Vector2 input from the new Input System
+        Vector2 inputVector = carControls.Car.Movement.ReadValue<Vector2>();
+
+        // Get player input for acceleration and steering
+        float vInput = inputVector.y; // Forward/backward input
+        float hInput = inputVector.x; // Steering input
 
 
         // Calculate current speed along the car's forward axis
@@ -129,23 +144,36 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject parentOfCollider = other.transform.gameObject;
+        GameObject parentOfCollider = other.gameObject;
 
-        if (other.CompareTag("Pickup"))
+        if (parentOfCollider.CompareTag("Pickup"))
         {
-            //Pickups.Add(parentOfCollider);
+            Debug.Log("PICKUP");
+            Debug.Log("parentOfCollider " + parentOfCollider.name);
+
             updatePickupList(parentOfCollider);
-            foreach(var pickup in Pickups)
+
+        }
+        if (parentOfCollider.CompareTag("Delivery"))
+        {
+            var tmpObject = parentOfCollider.GetComponent<Delivery>().GetWantedDelivery();
+            Debug.Log("tmpObject " + tmpObject.name);
+
+            updatePickupList(tmpObject);
+            if (!Pickups.Contains(tmpObject))
             {
-                Debug.Log("pickup " + pickup);
+
+                Destroy(parentOfCollider.GetComponent<Delivery>().GetWantedDelivery());
+                Destroy(parentOfCollider);
+                Debug.Log("DELIVERY");
 
             }
-        }
-        if (other.CompareTag("Delivery"))
-        {
-            updatePickupList(parentOfCollider.GetComponent<Delivery>().GetWantedDelivery());
-            Destroy(parentOfCollider);
-            Destroy(parentOfCollider.GetComponent<Delivery>().GetWantedDelivery());
+            else
+            {
+                Debug.Log("NO NO DELIVERY");
+
+            }
+
         }
         updateCenterOfGravityOffset();
     }
@@ -153,11 +181,6 @@ public class PlayerController : MonoBehaviour
     private void updateCenterOfGravityOffset()
     {
         centreOfGravityOffset = -1f+ Pickups.Count;
-    }
-
-    private List<GameObject> getPickupList()
-    {
-        return Pickups;
     }
 
     private void updatePickupList(GameObject pickup)
