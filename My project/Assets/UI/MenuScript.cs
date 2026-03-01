@@ -6,7 +6,7 @@ public class MenuScript : MonoBehaviour
     public void PlayGame ()
     {
         
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("CityTrack");
 
     }
     public void QuitGame ()
