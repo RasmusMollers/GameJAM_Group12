@@ -20,6 +20,7 @@ public class Pickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        this.GetComponent<MeshRenderer>().enabled = false;
         //gameObject.SetActive(false);
 
         //Instantiate(onPickupEffect, this.transform);

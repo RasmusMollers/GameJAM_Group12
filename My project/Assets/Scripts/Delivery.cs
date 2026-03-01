@@ -18,7 +18,7 @@ public class Delivery : MonoBehaviour
     {
         
     }
-    public GameObject WantedDelivery()
+    public GameObject GetWantedDelivery()
     {
         return gameObjectWanted;
     }

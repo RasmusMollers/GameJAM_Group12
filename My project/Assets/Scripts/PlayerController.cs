@@ -143,8 +143,9 @@ public class PlayerController : MonoBehaviour
         }
         if (other.CompareTag("Delivery"))
         {
-            updatePickupList(parentOfCollider.GetComponent<Delivery>().WantedDelivery());
+            updatePickupList(parentOfCollider.GetComponent<Delivery>().GetWantedDelivery());
             Destroy(parentOfCollider);
+            Destroy(parentOfCollider.GetComponent<Delivery>().GetWantedDelivery());
         }
         updateCenterOfGravityOffset();
     }
