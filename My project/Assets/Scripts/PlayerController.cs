@@ -18,9 +18,16 @@ public class PlayerController : MonoBehaviour
     public float steeringRangeAtMaxSpeed = 10f;
     public float centreOfGravityOffset = -1f;
 
+    //Progression Parameters
+    private int xp = 0;
+
+    private float emissionMeter = 100f;
+
+
 
     //Wheels Reference
     List<WheelCollider> Wheels = new List<WheelCollider>();
+    List<GameObject> Pickups = new List<GameObject>();
 
     [Header("Input Actions")]
     public InputActionReference moveAction;
@@ -123,4 +130,25 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Pickup"))
+        {
+            GameObject parentOfCollider = other.transform.parent.gameObject;
+            Pickups.Add(parentOfCollider);
+        }
+        if (other.CompareTag("Delivery"))
+        {
+            //cheeck for correct delivery? remove object from list
+
+        }
+        updateCenterOfGravityOffset();
+    }
+
+    private void updateCenterOfGravityOffset()
+    {
+        centreOfGravityOffset = -1f+ Pickups.Count;
+    }
+
 }
