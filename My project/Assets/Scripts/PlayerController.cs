@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -76,6 +77,15 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         updateSpeedAndSteering();
+        if (Input.GetKey(KeyCode.Space))
+        {
+            this.transform.position = new Vector3(221.357971f, 11.9313049f, 220.739548f);
+        }
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+            //SceneManager.LoadScene("Menu");
+        }
     }
 
     void updateSpeedAndSteering()
