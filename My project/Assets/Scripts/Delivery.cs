@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class Delivery : MonoBehaviour
 {
+    GameObject gameObjectWanted;
+
+    public GameObject onDeliveryEffect;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,4 +18,24 @@ public class Delivery : MonoBehaviour
     {
         
     }
+    public GameObject WantedDelivery()
+    {
+        return gameObjectWanted;
+    }
+
+
+    /*
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var refPlayer = other.transform.parent.gameObject.GetComponent<PlayerController>();
+            var pickupList = refPlayer.getPickupList();
+            if (pickupList.Contains(gameObjectWanted))
+            {
+                refPlayer.updatePickupList();
+            }
+        }
+    }
+    */
 }
