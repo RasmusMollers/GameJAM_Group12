@@ -18,11 +18,14 @@ public class WheelControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        WheelCollider.GetWorldPose(out position, out rotation);
+        wheelModel.transform.position = position;
+        wheelModel.transform.rotation = rotation;
+        /*
         if (this.CompareTag("Steering"))
         {
-            WheelCollider.GetWorldPose(out position, out rotation);
-            wheelModel.transform.position = position;
-            wheelModel.transform.rotation = rotation;
+
         }
+        */
     }
 }

@@ -53,11 +53,7 @@ public class PlayerController : MonoBehaviour
         {
             Wheels.Add(wheel);
         }
-        foreach (WheelCollider wheel in Wheels)
-        {
-            Debug.Log("Wheel : " + wheel);
 
-        }
         // Adjust center of mass to improve stability and prevent rolling
         Vector3 centerOfMass = rb.centerOfMass;
         centerOfMass.y += centreOfGravityOffset;
@@ -86,7 +82,7 @@ public class PlayerController : MonoBehaviour
         // Get player input for acceleration and steering
         float vInput = moveAction.action.ReadValue<Vector2>().y; // Forward/backward input
         float hInput = moveAction.action.ReadValue<Vector2>().x; // Steering input
-        Debug.Log("vInput? " + vInput + "\n" + "hInput " + hInput);
+        //Debug.Log("vInput? " + vInput + "\n" + "hInput " + hInput);
 
 
         // Calculate current speed along the car's forward axis
@@ -99,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
         // Determine if the player is accelerating or trying to reverse
         bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
-        Debug.Log("Accelerating? " + isAccelerating +"\n"+ "Speed " + forwardSpeed);
+        //Debug.Log("Accelerating? " + isAccelerating +"\n"+ "Speed " + forwardSpeed);
 
 
 
@@ -133,15 +129,22 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        GameObject parentOfCollider = other.transform.gameObject;
+
         if (other.CompareTag("Pickup"))
         {
-            GameObject parentOfCollider = other.transform.parent.gameObject;
-            Pickups.Add(parentOfCollider);
+            //Pickups.Add(parentOfCollider);
+            updatePickupList(parentOfCollider);
+            foreach(var pickup in Pickups)
+            {
+                Debug.Log("pickup " + pickup);
+
+            }
         }
         if (other.CompareTag("Delivery"))
         {
-            //cheeck for correct delivery? remove object from list
-
+            updatePickupList(parentOfCollider.GetComponent<Delivery>().WantedDelivery());
+            Destroy(parentOfCollider);
         }
         updateCenterOfGravityOffset();
     }
@@ -151,4 +154,20 @@ public class PlayerController : MonoBehaviour
         centreOfGravityOffset = -1f+ Pickups.Count;
     }
 
+    private List<GameObject> getPickupList()
+    {
+        return Pickups;
+    }
+
+    private void updatePickupList(GameObject pickup)
+    {
+        if (Pickups.Contains(pickup))
+        {
+            Pickups.Remove(pickup);
+        }
+        else
+        {
+            Pickups.Add(pickup);
+        }
+    }
 }

@@ -4,7 +4,7 @@ public class Pickup : MonoBehaviour
 {
     private float rotSpeed = 1.0f;
     private float bounceFactor = 0.01f;
-    public GameObject onPickupEffect;
+    //public GameObject onPickupEffect;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,8 +20,9 @@ public class Pickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
-        Instantiate(onPickupEffect, this.transform);
+        //gameObject.SetActive(false);
+
+        //Instantiate(onPickupEffect, this.transform);
     }
 
 }
