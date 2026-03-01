@@ -4,11 +4,16 @@ public class Pickup : MonoBehaviour
 {
     private float rotSpeed = 1.0f;
     private float bounceFactor = 0.01f;
+    public Color color;
     //public GameObject onPickupEffect;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+    }
+    void Awake()
+    {
+        this.GetComponent<Renderer>().material.color = color;
+
     }
 
     // Update is called once per frame
