@@ -394,7 +394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f53c70773eeb23144a199d8917b8061d, type: 3}
       propertyPath: m_Name
-      value: car
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -418,6 +418,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f53c70773eeb23144a199d8917b8061d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6429551008211519262}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f53c70773eeb23144a199d8917b8061d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8282675998032321279}
     - targetCorrespondingSourceObject: {fileID: -5287916851642620284, guid: f53c70773eeb23144a199d8917b8061d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8410435539712795666}
@@ -514,12 +517,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   motorTorque: 2000
-  brakeTorque: 2000
+  brakeTorque: 5000
   maxSpeed: 20
   steeringRange: 30
-  steeringRangeAtMaxSpeed: 10
+  steeringRangeAtMaxSpeed: 20
   centreOfGravityOffset: -1
-  moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+--- !u!114 &8282675998032321279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8054618794975064710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe5d0757fe5ba964e9b5e66fecdacc61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::truck
+  goods: []
 --- !u!4 &8246636644502452262 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1258572041014540273, guid: f53c70773eeb23144a199d8917b8061d, type: 3}

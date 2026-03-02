@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     //Wheels Reference
     List<WheelCollider> Wheels = new List<WheelCollider>();
-    List<GameObject> Pickups = new List<GameObject>();
+   // List<GameObject> Pickups = new List<GameObject>();
 
     private CarInputActions carControls; // Reference to the new input system
 
@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+   /* private void OnTriggerEnter(Collider other)
     {
         GameObject parentOfCollider = other.gameObject;
 
@@ -203,5 +203,5 @@ public class PlayerController : MonoBehaviour
         {
             Pickups.Add(pickup);
         }
-    }
+    }*/
 }
